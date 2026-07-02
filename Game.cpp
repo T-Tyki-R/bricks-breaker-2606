@@ -167,4 +167,10 @@ void Game::CheckCollision()
 				- Display losing message
 				- Prompt user to (R)eset
 	*/
+	if (ball.y_position + ball.y_velocity >= WINDOW_HEIGHT - 1) {
+		ball.moving = false;
+		Console::SetCursorPosition(WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2);
+		std::cout << "You lose! Press R to play again.";
+	}
+	
 }
