@@ -107,8 +107,9 @@ void Game::Render() const
 
 	// TODO #3 - Update render to render all bricks
 	// Render all the bricks in the vector
-	brick.Draw();
-	
+	for (const Box& brick : bricks) {
+		brick.Draw();
+	}
 	
 	Console::Lock(false);
 }
