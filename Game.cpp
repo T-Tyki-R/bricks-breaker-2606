@@ -25,12 +25,37 @@ void Game::Reset()
 	bricks.clear(); // Make sure the vector is cleared when resetted
 	bricks.reserve(5); // Reserve 5 slots for 5 bricks
 
-	for (int i = 0; i < 5; i++) {
+	const int brickCount = 5;
+
+	// Brick dimension
+	const int brickH = 2;
+	const int brickW = 10;
+
+	// Single row
+	const int rowY = 5;
+
+	int windowWidth = Console::WindowWidth();
+
+	// Bricks' width
+	int totalBricksWidth = brickCount * brickW;
+
+	// Window's remaining space
+	int remainingSpace = windowWidth - totalBricksWidth;
+
+	// Even spacing - divide remainin space by the count of bricks
+	float spacing = static_cast<float>(remainingSpace) / (brickCount +1);
+
+	for (int i = 0; i < brickCount; i++) {
 		Box brick;
 		brick.width = 10;
 		brick.height = 2;
-		brick.x_position = 0;
-		brick.y_position = 5;
+
+		// evenly space the bricks' x position
+		brick.x_position = static_cast<int>(spacing + i * (brickW + spacing));
+
+		// All bricks has the same y position
+		brick.y_position = rowY;
+
 		brick.doubleThick = true;
 		brick.color = ConsoleColor::DarkGreen;	
 
@@ -81,8 +106,10 @@ void Game::Render() const
 	ball.Draw();
 
 	// TODO #3 - Update render to render all bricks
+	// Render all the bricks in the vector
 	brick.Draw();
-
+	
+	
 	Console::Lock(false);
 }
 
