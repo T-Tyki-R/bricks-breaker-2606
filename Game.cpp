@@ -19,6 +19,10 @@ void Game::Reset()
 	ball.color = ConsoleColor::Cyan;
 	ResetBall();
 
+	// Resetting Win/Lose status
+	gameWon = false;
+	gameLost = false;
+
 	// TODO #2 - Add this brick and 4 more bricks to the vector
 
 	// Create 5 bricks
@@ -110,6 +114,23 @@ void Game::Render() const
 	for (const Box& brick : bricks) {
 		brick.Draw();
 	}
+	/*
+		- Display Winning message 
+		- Prompt user to (R)eset
+	*/
+	if (gameWon) {
+		Console::SetCursorPosition(WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2);
+		std::cout << "You win! Press R to play again.";
+	}
+
+	/*
+		- Display Losing message
+		- Prompt user to (R)eset
+	*/
+	if (gameLost) {
+		Console::SetCursorPosition(WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2);
+		std::cout << "You lose! Press R to play again.";
+	}
 	
 	Console::Lock(false);
 }
@@ -145,13 +166,10 @@ void Game::CheckCollision()
 		Win Condition
 			Check if vector is empty - no bricks
 				- Stop ball
-				- Display winning message
-				- Prompt user to (R)eset
 	*/ 
 	if (bricks.empty()) {
 		ball.moving = false; 
-		Console::SetCursorPosition(WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2);
-		std::cout << "You win! Press R to play again.";
+		gameWon = true;
 	}
 
 	if (paddle.Contains(ball.x_position + ball.x_velocity, ball.y_velocity + ball.y_position))
@@ -164,13 +182,10 @@ void Game::CheckCollision()
 		Lose Condition
 			Check if ball touches window
 				- Stop ball
-				- Display losing message
-				- Prompt user to (R)eset
 	*/
 	if (ball.y_position + ball.y_velocity >= WINDOW_HEIGHT - 1) {
 		ball.moving = false;
-		Console::SetCursorPosition(WINDOW_WIDTH / 2 - 10, WINDOW_HEIGHT / 2);
-		std::cout << "You lose! Press R to play again.";
+		gameLost = true;
 	}
 	
 }
